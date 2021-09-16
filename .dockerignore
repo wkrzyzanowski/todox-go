@@ -1,7 +1,4 @@
 .git
 .idea
-todox-backend/build
-todox-frontend/build
-todox-frontend/node-modules
-**/node-modules
-*/**/node-modules
+.code
+**/node_modules
