@@ -1,6 +1,7 @@
 package hello
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -26,22 +27,38 @@ var enpoints = []server.ApiEndpoint{
 		HttpMethod:   http.MethodGet,
 		RelativePath: "/api/hello",
 		HandlerFunc: []gin.HandlerFunc{
-			func(c *gin.Context) {
-				c.JSON(200, gin.H{
-					"message": "Hello world!",
-				})
-			},
+			GetHello(),
 		},
 	},
 	{
 		HttpMethod:   http.MethodPost,
 		RelativePath: "/api/hello",
 		HandlerFunc: []gin.HandlerFunc{
-			func(c *gin.Context) {
-				c.JSON(200, gin.H{
-					"message": "Hello world!",
-				})
-			},
+			PostHello(),
 		},
 	},
+}
+
+func GetHello() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "Hello world!",
+		})
+	}
+}
+
+func PostHello() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		jsonData, err := ctx.GetRawData()
+		if err == nil {
+			message := fmt.Sprintf("Hello world! Your message is: %v", string(jsonData))
+			ctx.JSON(200, gin.H{
+				"message": message,
+			})
+		} else {
+			ctx.JSON(404, gin.H{
+				"message": "Bad Request",
+			})
+		}
+	}
 }
