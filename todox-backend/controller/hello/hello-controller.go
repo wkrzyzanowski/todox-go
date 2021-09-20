@@ -8,6 +8,8 @@ import (
 	"github.com/wkrzyzanowski/todox-go/server"
 )
 
+const HELLO_BASE_URL = server.BASE_API_URL + "/hello"
+
 type HelloController struct {
 	Endpoints []server.ApiEndpoint
 }
@@ -25,14 +27,14 @@ func (controller *HelloController) GetEndpoints() []server.ApiEndpoint {
 var enpoints = []server.ApiEndpoint{
 	{
 		HttpMethod:   http.MethodGet,
-		RelativePath: "/api/hello",
+		RelativePath: HELLO_BASE_URL,
 		HandlerFunc: []gin.HandlerFunc{
 			GetHello(),
 		},
 	},
 	{
 		HttpMethod:   http.MethodPost,
-		RelativePath: "/api/hello",
+		RelativePath: HELLO_BASE_URL,
 		HandlerFunc: []gin.HandlerFunc{
 			PostHello(),
 		},

@@ -29,6 +29,14 @@ func (s *Server) ServeVueWebApp() *Server {
 	return s
 }
 
+func (s *Server) RegisterGlobalHandlers(chain []ApiMiddleware) *Server {
+	for _, item := range chain {
+		log.Printf("Register middleware: %v", item.Name)
+		serverInstance.instance.Use(item.Function)
+	}
+	return s
+}
+
 func (s *Server) RegisterControllers(apiController []ApiController) *Server {
 	for _, controller := range apiController {
 		for _, endpoint := range controller.GetEndpoints() {
