@@ -38,6 +38,8 @@ COPY --from=todox-frontend /tmp/webapp /app/webapp
 
 COPY --from=todox-backend /tmp/todox-go/out/todox-go /app/api/todox-go
 
+COPY --from=todox-backend /tmp/todox-go/secret.json /app/api/secret.json
+
 EXPOSE 8080
 
 WORKDIR /app/api

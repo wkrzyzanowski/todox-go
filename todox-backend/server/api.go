@@ -20,3 +20,7 @@ type ApiMiddleware struct {
 	Name     string
 	Function gin.HandlerFunc
 }
+
+type MessageResponse struct {
+	Message string `json:"message"`
+}
