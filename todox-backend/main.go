@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/wkrzyzanowski/todox-go/controller/authentication"
+	"github.com/wkrzyzanowski/todox-go/controller/authenticationcontroller"
 	"github.com/wkrzyzanowski/todox-go/controller/hello"
 	"github.com/wkrzyzanowski/todox-go/middleware"
 	"github.com/wkrzyzanowski/todox-go/server"
@@ -23,12 +23,13 @@ func startServer() {
 func getControllers() []server.ApiController {
 	return []server.ApiController{
 		hello.NewHelloController(),
-		authentication.NewAuthenticationController(),
+		authenticationcontroller.NewAuthenticationController(),
 	}
 }
 
 func getGlobalMiddleware() []server.ApiMiddleware {
 	return []server.ApiMiddleware{
 		middleware.NewLoggerMiddleware(),
+		middleware.NewJwtGuardMiddleware(),
 	}
 }

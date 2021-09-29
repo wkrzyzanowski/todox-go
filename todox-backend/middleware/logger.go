@@ -2,8 +2,10 @@ package middleware
 
 import (
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -30,6 +32,13 @@ func logRequest() gin.HandlerFunc {
 		// Use the content
 		bodyString := string(bodyBytes)
 
+		if !isValidJson(bodyString) {
+			ctx.JSON(http.StatusBadRequest, server.MessageResponse{
+				Message: "Request body is not a valid JSON!",
+			})
+			ctx.Abort()
+		}
+
 		log.Printf(`
 		...:: Logger Middleware ::...
 		[Method]: %v
@@ -39,4 +48,9 @@ func logRequest() gin.HandlerFunc {
 			ctx.Request.Method, ctx.Request.URL, strings.Join(strings.Fields(bodyString), ""))
 		ctx.Next()
 	}
+}
+
+func isValidJson(str string) bool {
+	var js json.RawMessage
+	return json.Unmarshal([]byte(str), &js) == nil
 }
