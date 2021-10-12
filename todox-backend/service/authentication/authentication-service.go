@@ -6,12 +6,12 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/wkrzyzanowski/todox-go/tools"
 )
 
 const USER = "admin"
@@ -33,7 +33,7 @@ func GetAuthentication(user string, password string) (AuthorizationToken, error)
 	userPassword := encode(password)
 	secretKey := readSecretJson()
 	if userPassword == secretKey {
-		log.Println("Authenticated successfully!")
+		tools.LOGGER.Info("Authenticated successfully!")
 		at, errAccess := createAccessToken(user, secretKey)
 		rt, errRefresh := createRefreshToken(user, secretKey)
 		if errAccess != nil || errRefresh != nil {
@@ -44,7 +44,7 @@ func GetAuthentication(user string, password string) (AuthorizationToken, error)
 			RefreshToken: rt,
 		}, nil
 	} else {
-		log.Println("Authentication failure!")
+		tools.LOGGER.Error("Authentication failure!")
 		return AuthorizationToken{}, errors.New("authentication failed")
 	}
 }
@@ -121,7 +121,7 @@ func encode(password string) string {
 func readSecretJson() string {
 	jsonFile, err := os.Open("secret.json")
 	if err != nil {
-		log.Fatalf("Cannot read sectet.json file. Error: %v", err)
+		tools.LOGGER.Fatal(fmt.Sprintf("Cannot read sectet.json file. Error: %v", err))
 	}
 	var byteValue, _ = ioutil.ReadAll(jsonFile)
 	var authenticationSecret AuthenticationSecret

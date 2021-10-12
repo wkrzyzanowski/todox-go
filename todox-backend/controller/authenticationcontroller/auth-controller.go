@@ -3,12 +3,12 @@ package authenticationcontroller
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/wkrzyzanowski/todox-go/server"
 	"github.com/wkrzyzanowski/todox-go/service/authentication"
+	"github.com/wkrzyzanowski/todox-go/tools"
 )
 
 const AUTHENTICATION_BASE_URL = server.BASE_API_URL + "/authentication"
@@ -76,7 +76,7 @@ func Refresh() gin.HandlerFunc {
 
 func getAuthenticationResponse(ctx *gin.Context, token authentication.AuthorizationToken, err error) {
 	if err != nil {
-		log.Println(err)
+		tools.LOGGER.Error("Error:", err)
 		ctx.JSON(http.StatusUnauthorized, server.MessageResponse{
 			Message: "====> Authentication failure!",
 		})

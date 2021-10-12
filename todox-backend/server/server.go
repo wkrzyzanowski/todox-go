@@ -2,11 +2,11 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/wkrzyzanowski/todox-go/tools"
 )
 
 const VUE_APP_SOURCES = "../webapp/dist/public"
@@ -31,7 +31,7 @@ func (s *Server) ServeVueWebApp() *Server {
 
 func (s *Server) RegisterGlobalHandlers(chain []ApiMiddleware) *Server {
 	for _, item := range chain {
-		log.Printf("Register middleware: %v", item.Name)
+		tools.LOGGER.Info(fmt.Sprintf("Register middleware: %v", item.Name))
 		serverInstance.instance.Use(item.Function)
 	}
 	return s
@@ -54,7 +54,7 @@ func (s *Server) RegisterControllers(apiController []ApiController) *Server {
 				serverInstance.instance.DELETE(endpoint.RelativePath, endpoint.HandlerFunc...)
 			default:
 				msg := fmt.Sprintf("Http Method misconfigured or not supported: %v", controller)
-				log.Fatalln(msg)
+				tools.LOGGER.Error(msg)
 			}
 
 		}

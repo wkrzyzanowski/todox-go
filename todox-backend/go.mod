@@ -21,4 +21,4 @@ require (
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
 
-require github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+require github.com/golang-jwt/jwt v3.2.2+incompatible // direct

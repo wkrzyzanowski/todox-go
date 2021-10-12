@@ -2,13 +2,13 @@ package middleware
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/wkrzyzanowski/todox-go/controller/authenticationcontroller"
 	"github.com/wkrzyzanowski/todox-go/server"
 	"github.com/wkrzyzanowski/todox-go/service/authentication"
+	"github.com/wkrzyzanowski/todox-go/tools"
 )
 
 func NewJwtGuardMiddleware() server.ApiMiddleware {
@@ -28,14 +28,14 @@ func filterRequest() gin.HandlerFunc {
 
 		requestUrl := ctx.Request.URL.String()
 
-		log.Printf(`
+		tools.LOGGER.Info(fmt.Sprintf(`
 		...:: Authorization Middleware ::...
 		[URL]: %v
-		....................................`, requestUrl)
+		....................................`, requestUrl))
 
 		for _, b := range notSecuredEndpoints {
 			if requestUrl == b {
-				log.Printf("Not secured endpoint is reached: %v", requestUrl)
+				tools.LOGGER.Info(fmt.Sprintf("Not secured endpoint is reached: %v", requestUrl))
 				ctx.Next()
 				return
 			}
@@ -45,9 +45,9 @@ func filterRequest() gin.HandlerFunc {
 
 		if token == "" {
 			errMessage := "Authorization header is missing."
-			log.Printf(`
+			tools.LOGGER.Info(fmt.Sprintf(`
 			[Error]: %v
-			`, errMessage)
+			`, errMessage))
 			ctx.JSON(http.StatusUnauthorized, server.MessageResponse{
 				Message: errMessage,
 			})
