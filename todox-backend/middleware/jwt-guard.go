@@ -26,11 +26,12 @@ var notSecuredEndpoints = []string{
 func filterRequest() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		log.Println("...:: Authorization Middleware ::...")
-
 		requestUrl := ctx.Request.URL.String()
 
-		log.Println(requestUrl)
+		log.Printf(`
+		...:: Authorization Middleware ::...
+		[URL]: %v
+		....................................`, requestUrl)
 
 		for _, b := range notSecuredEndpoints {
 			if requestUrl == b {
@@ -43,8 +44,12 @@ func filterRequest() gin.HandlerFunc {
 		token := getToken(ctx)
 
 		if token == "" {
+			errMessage := "Authorization header is missing."
+			log.Printf(`
+			[Error]: %v
+			`, errMessage)
 			ctx.JSON(http.StatusUnauthorized, server.MessageResponse{
-				Message: "Authorization header is missing.",
+				Message: errMessage,
 			})
 
 			ctx.Abort()
