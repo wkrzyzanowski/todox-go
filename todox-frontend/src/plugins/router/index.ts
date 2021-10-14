@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../../views/Home.vue';
+import HomeView from '../../views/HomeView.vue';
+import LoginView from '../../views/LoginView.vue';
 
 Vue.use(VueRouter);
 
@@ -8,12 +9,17 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: HomeView,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginView,
   },
   {
     path: '/about',
     name: 'About',
-    component: () => import('../../views/About.vue'),
+    component: () => import('../../views/AboutView.vue'),
   },
 ];
 

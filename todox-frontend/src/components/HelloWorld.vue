@@ -25,13 +25,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import HelloRepository from '../repository/HelloRepository';
+import HelloRestService from '../service/HelloRestService';
 
 export default Vue.extend({
   name: 'HelloWorld',
   methods: {
     makeCall(): void {
-      HelloRepository.getHello()
+      HelloRestService.getHello()
         .then((response) => (this.message = response.data))
         .catch((err) => {
           console.error(err);
